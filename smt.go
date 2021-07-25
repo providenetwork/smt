@@ -64,6 +64,14 @@ func (smt *SparseMerkleTree) Height() int {
 	return smt.depth()
 }
 
+func (smt *SparseMerkleTree) Nodes() MapStore {
+	return smt.nodes
+}
+
+func (smt *SparseMerkleTree) Values() MapStore {
+	return smt.values
+}
+
 func (smt *SparseMerkleTree) depth() int {
 	return smt.th.pathSize() * 8
 }
