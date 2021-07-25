@@ -60,6 +60,10 @@ func (smt *SparseMerkleTree) SetRoot(root []byte) {
 	smt.root = root
 }
 
+func (smt *SparseMerkleTree) Height() int {
+	return smt.depth()
+}
+
 func (smt *SparseMerkleTree) depth() int {
 	return smt.th.pathSize() * 8
 }

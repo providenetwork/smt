@@ -32,6 +32,13 @@ func NewSimpleMap() *SimpleMap {
 	}
 }
 
+// SimpleMapFactory initializes a SimpleMap with m.
+func SimpleMapFactory(m map[string][]byte) *SimpleMap {
+	return &SimpleMap{
+		m: m,
+	}
+}
+
 // Get gets the value for a key.
 func (sm *SimpleMap) Get(key []byte) ([]byte, error) {
 	if value, ok := sm.m[string(key)]; ok {
