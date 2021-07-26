@@ -69,7 +69,7 @@ func (sm *SimpleMap) Delete(key []byte) error {
 func (sm *SimpleMap) MarshalJSON() ([]byte, error) {
 	val := map[string]interface{}{}
 	for k := range sm.m {
-		val[k] = hex.EncodeToString(sm.m[k])
+		val[hex.EncodeToString([]byte(k))] = hex.EncodeToString(sm.m[k])
 	}
 	return json.Marshal(val)
 }
@@ -84,11 +84,17 @@ func (sm *SimpleMap) UnmarshalJSON(raw []byte) error {
 
 	sm.m = map[string][]byte{}
 	for k := range val {
+		_key, err := hex.DecodeString(k)
+		if err != nil {
+			return err
+		}
+
 		_val, err := hex.DecodeString(val[k])
 		if err != nil {
 			return err
 		}
-		sm.m[k] = _val
+
+		sm.m[string(_key)] = _val
 	}
 
 	return json.Unmarshal(raw, &sm.m)
