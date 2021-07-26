@@ -97,5 +97,5 @@ func (sm *SimpleMap) UnmarshalJSON(raw []byte) error {
 		sm.m[string(_key)] = _val
 	}
 
-	return json.Unmarshal(raw, &sm.m)
+	return nil
 }
