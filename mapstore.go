@@ -1,6 +1,8 @@
 package smt
 
 import (
+	"encoding/hex"
+	"encoding/json"
 	"fmt"
 )
 
@@ -61,4 +63,33 @@ func (sm *SimpleMap) Delete(key []byte) error {
 		return nil
 	}
 	return &InvalidKeyError{Key: key}
+}
+
+// MarshalJSON marshal to JSON
+func (sm *SimpleMap) MarshalJSON() ([]byte, error) {
+	val := map[string]interface{}{}
+	for k := range sm.m {
+		val[k] = hex.EncodeToString(sm.m[k])
+	}
+	return json.Marshal(val)
+}
+
+// UnmarshalJSON unmarshal from JSON
+func (sm *SimpleMap) UnmarshalJSON(raw []byte) error {
+	var val map[string]string
+	err := json.Unmarshal(raw, &val)
+	if err != nil {
+		return err
+	}
+
+	sm.m = map[string][]byte{}
+	for k := range val {
+		_val, err := hex.DecodeString(val[k])
+		if err != nil {
+			return err
+		}
+		sm.m[k] = _val
+	}
+
+	return json.Unmarshal(raw, &sm.m)
 }
