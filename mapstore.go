@@ -11,6 +11,7 @@ type MapStore interface {
 	Get(key []byte) ([]byte, error)     // Get gets the value for a key.
 	Set(key []byte, value []byte) error // Set updates the value for a key.
 	Delete(key []byte) error            // Delete deletes a key.
+	Size() int                          // Size of the tree
 }
 
 // InvalidKeyError is thrown when a key that does not exist is being accessed.
@@ -63,6 +64,11 @@ func (sm *SimpleMap) Delete(key []byte) error {
 		return nil
 	}
 	return &InvalidKeyError{Key: key}
+}
+
+// Size returns the size of the tree.
+func (sm *SimpleMap) Size() int {
+	return len(sm.m)
 }
 
 // MarshalJSON marshal to JSON
